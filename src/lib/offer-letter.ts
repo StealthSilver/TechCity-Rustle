@@ -192,7 +192,7 @@ export function offerLetterBlocks(values: OfferLetterValues): LetterBlock[] {
     {
       runs: [
         {
-          text: "You will be responsible for delivering the assigned training sessions, covering the prescribed technical curriculum, conducting interactive sessions, practical activities,and providing appropriate guidance to the participating students.",
+          text: "You will be responsible for delivering the assigned training sessions, covering the prescribed technical curriculum, conducting interactive sessions, practical activities, and providing appropriate guidance to the participating students.",
           weight: "regular",
         },
       ],

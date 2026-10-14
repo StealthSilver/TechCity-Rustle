@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "pdf-lib/src/*": ["./node_modules/pdf-lib/es/*"]
     }
   },
   "include": [
