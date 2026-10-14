@@ -3,8 +3,9 @@ import { AppreciationLetterEditor } from "@/components/appreciation-letter-edito
 import { Navbar } from "@/components/navbar";
 
 export const metadata: Metadata = {
-  title: "Appreciation letter — TechCity",
-  description: "Fill the TechCity appreciation letter template and download it as a PDF.",
+  title: "Appreciation letter",
+  description:
+    "Fill the Techcity Studio appreciation letter template and download it as a PDF.",
 };
 
 export default function AppreciationPage() {

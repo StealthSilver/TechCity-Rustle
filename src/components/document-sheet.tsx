@@ -29,17 +29,17 @@ export function DocumentSheet({
 function CertificateSheet({ className }: { className?: string }) {
   return (
     <article className={sheetClass(className)}>
-      <div className="pointer-events-none absolute inset-[4.5cqi] border border-brass/80" />
+      <div className="pointer-events-none absolute inset-[4.5cqi] border border-ink/25" />
       <div className="pointer-events-none absolute inset-[6.5cqi] border border-ink/10" />
       <div className="flex h-full flex-col items-center px-[9cqi] pt-[12cqi] pb-[8cqi] text-center">
-        <p className="text-[2.4cqi] tracking-[0.34em] text-brass">TECHCITY</p>
+        <p className="text-[2.4cqi] tracking-[0.34em] text-ink/45">TECHCITY</p>
         <p className="mt-[7cqi] font-serif text-[7.2cqi] leading-none tracking-tight text-ink">
           Certificate
         </p>
         <p className="mt-[1.5cqi] font-serif text-[3.4cqi] text-muted italic">
           of completion
         </p>
-        <div className="mt-[5cqi] h-px w-[18cqi] bg-brass" />
+        <div className="mt-[5cqi] h-px w-[18cqi] bg-ink/30" />
         <p className="mt-[6cqi] text-[2.6cqi] tracking-[0.14em] text-muted uppercase">
           This certifies that
         </p>
@@ -52,8 +52,8 @@ function CertificateSheet({ className }: { className?: string }) {
             <div className="mb-[1.4cqi] h-px w-[16cqi] bg-ink/25" />
             <p className="text-[2cqi] tracking-[0.16em] text-muted">SIGNATORY</p>
           </div>
-          <div className="grid size-[14cqi] place-items-center rounded-full border border-brass text-brass">
-            <div className="grid size-[10.5cqi] place-items-center rounded-full border border-dashed border-brass/80">
+          <div className="grid size-[14cqi] place-items-center rounded-full border border-ink/35 text-ink/55">
+            <div className="grid size-[10.5cqi] place-items-center rounded-full border border-dashed border-ink/25">
               <span className="font-serif text-[3cqi]">TC</span>
             </div>
           </div>
@@ -79,7 +79,7 @@ function OfferSheet({ className }: { className?: string }) {
               PEOPLE TEAM
             </p>
           </div>
-          <p className="text-[2.1cqi] tracking-[0.18em] text-brass">OFFER</p>
+          <p className="text-[2.1cqi] tracking-[0.18em] text-ink/45">OFFER</p>
         </div>
         <p className="mt-[5cqi] text-[2.5cqi] text-muted">14 October 2026</p>
         <p className="mt-[3cqi] font-serif text-[5.4cqi] leading-tight text-ink">
@@ -114,7 +114,7 @@ function AppreciationSheet({ className }: { className?: string }) {
         <p className="mt-[8cqi] max-w-[28cqi] font-serif text-[7cqi] leading-[0.95] text-ink italic">
           With appreciation
         </p>
-        <div className="mt-[5cqi] h-px w-[14cqi] bg-brass" />
+        <div className="mt-[5cqi] h-px w-[14cqi] bg-ink/30" />
         <p className="mt-[6cqi] text-[3cqi] text-ink">Dear Priya Nair,</p>
         <p className="mt-[3cqi] text-[2.9cqi] leading-relaxed text-muted">
           Thank you for the care you brought to this season’s cohort. This note records our appreciation, on letterhead, from the approved template.

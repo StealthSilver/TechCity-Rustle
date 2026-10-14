@@ -24,38 +24,21 @@ export function BrandMark({
       className={`inline-flex items-baseline gap-[0.22em] leading-none text-ink ${className}`}
     >
       <img src="/techcity-logo.png" alt="" className="h-[1cap] w-auto" />
-      <span className="text-[0.42em] font-medium tracking-[0.08em]">STUDIO</span>
+      <StudioWord />
+    </span>
+  );
+}
+
+function StudioWord() {
+  return (
+    <span className="text-[0.58em] font-semibold uppercase leading-none tracking-[0.06em]">
+      STUDIO
     </span>
   );
 }
 
 export function Navbar({ current }: { current?: string }) {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState(current ?? "");
-
-  useEffect(() => {
-    if (current) return;
-
-    const sections = links
-      .map((link) => document.getElementById(link.id))
-      .filter((section): section is HTMLElement => section !== null);
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        if (visible?.target.id) {
-          setActive(visible.target.id);
-        }
-      },
-      { rootMargin: "-72px 0px -45% 0px", threshold: [0.1, 0.25, 0.5] },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, [current]);
 
   useEffect(() => {
     if (!open) return;
@@ -71,16 +54,16 @@ export function Navbar({ current }: { current?: string }) {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur-md">
       <div className="mx-auto flex min-h-14 max-w-6xl items-center justify-between gap-3 px-4 py-2 sm:gap-6 sm:px-6 md:px-8">
-        <a href="/" aria-label="STUDIO" className="flex min-w-0 items-center">
-          <BrandMark />
+        <a href="/" aria-label="Techcity Studio" className="flex min-w-0 items-center">
+          <BrandMark className="text-[2rem] sm:text-[2.35rem]" />
         </a>
 
-        <nav className="hidden items-center gap-5 md:flex lg:gap-6 xl:gap-8" aria-label="Documents">
+        <nav className="hidden items-center gap-4 lg:flex lg:gap-5" aria-label="Documents">
           {links.map((link) => (
             <ProductLink
               key={link.id}
               href={link.href}
-              current={active === link.id}
+              current={current === link.id}
               className="text-sm text-muted transition-colors hover:text-ink aria-[current=true]:text-ink"
             >
               {link.label}
@@ -89,7 +72,7 @@ export function Navbar({ current }: { current?: string }) {
           <AuthButton className="rounded-lg px-3 py-1.5 text-sm" />
         </nav>
 
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-2 lg:hidden">
           <AuthButton
             className="rounded-lg px-3 py-1.5 text-sm"
             onDone={() => setOpen(false)}
@@ -111,13 +94,13 @@ export function Navbar({ current }: { current?: string }) {
         <nav
           id="mobile-nav"
           aria-label="Documents"
-          className="max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-t border-line px-4 py-2 sm:px-6 md:hidden"
+          className="max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-t border-line px-4 py-2 sm:px-6 lg:hidden"
         >
           {links.map((link) => (
             <ProductLink
               key={link.id}
               href={link.href}
-              current={active === link.id}
+              current={current === link.id}
               className="block border-b border-line py-3.5 text-base text-ink"
               onNavigate={() => setOpen(false)}
             >
@@ -151,7 +134,7 @@ function AuthButton({
     return (
       <button
         type="button"
-        className={`border border-line text-ink ${className ?? ""}`}
+        className={`border border-line text-ink transition-colors duration-200 ease-out hover:border-ink hover:bg-ink hover:text-white ${className ?? ""}`}
         onClick={() => {
           onDone?.();
           void logout();
@@ -165,7 +148,7 @@ function AuthButton({
   return (
     <button
       type="button"
-      className={`bg-ink text-white ${className ?? ""}`}
+      className={`bg-ink text-white transition-colors duration-200 ease-out hover:bg-[#3a3a3a] ${className ?? ""}`}
       onClick={() => {
         onDone?.();
         openLogin();

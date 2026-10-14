@@ -10,6 +10,7 @@
   --line: #e7e7e4;
   --accent: #111111;
   --brass: #b5b5b0;
+  --amber: #f59e0b;
 }
 
 @theme inline {
@@ -22,6 +23,7 @@
   --color-line: var(--line);
   --color-accent: var(--accent);
   --color-brass: var(--brass);
+  --color-amber: var(--amber);
   --font-sans: var(--font-geist-sans);
   --font-serif: var(--font-instrument-serif);
   --animate-shimmer: shimmer 2.4s linear infinite;

@@ -3,8 +3,8 @@ import { ComingSoon } from "@/components/coming-soon";
 import { Navbar } from "@/components/navbar";
 
 export const metadata: Metadata = {
-  title: "Certificate — TechCity",
-  description: "TechCity certificates are coming soon.",
+  title: "Certificate",
+  description: "Techcity Studio certificates are coming soon.",
 };
 
 export default function CertificatePage() {

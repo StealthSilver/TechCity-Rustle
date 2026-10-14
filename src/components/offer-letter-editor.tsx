@@ -258,18 +258,7 @@ export function OfferLetterEditor() {
       </form>
 
       <section className="min-w-0 lg:sticky lg:top-20" aria-label="Offer letter preview">
-        <div className="mb-3 flex items-center justify-between gap-4">
-          <h2 className="text-sm text-muted">Preview</h2>
-          <button
-            type="button"
-            onClick={() => void onDownload()}
-            disabled={!complete || downloading}
-            className="hidden h-10 items-center rounded-lg bg-ink px-4 text-sm text-white transition-opacity disabled:cursor-not-allowed disabled:opacity-40 lg:inline-flex"
-          >
-            {downloading ? "Preparing PDF…" : "Download PDF"}
-          </button>
-        </div>
-        <div className="relative h-[min(72dvh,820px)] min-h-80 overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 sm:min-h-96 md:h-[min(78dvh,820px)] lg:h-[calc(100dvh-7.5rem)] lg:max-h-[860px] lg:min-h-[32rem]">
+        <div className="relative h-[min(72dvh,820px)] min-h-80 overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 sm:min-h-96 md:h-[min(78dvh,820px)] lg:h-[calc(100dvh-6.5rem)] lg:max-h-[860px] lg:min-h-[32rem]">
           {frames.some((frame) => frame.ready) ? null : (
             <div className="absolute inset-0 z-20 grid place-items-center bg-white text-sm text-muted">
               Preparing the letter…

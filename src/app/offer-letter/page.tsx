@@ -3,9 +3,9 @@ import { Navbar } from "@/components/navbar";
 import { OfferLetterEditor } from "@/components/offer-letter-editor";
 
 export const metadata: Metadata = {
-  title: "Offer letter — TechCity",
+  title: "Offer letter",
   description:
-    "Fill the TechCity offer letter template and download it as a PDF.",
+    "Fill the Techcity Studio offer letter template and download it as a PDF.",
 };
 
 export default function OfferLetterPage() {

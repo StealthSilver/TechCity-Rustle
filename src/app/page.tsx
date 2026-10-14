@@ -1,35 +1,66 @@
+import { Drawer, Format, Keyboard } from "@lucasmarkes/hairline/react";
+import type { CSSProperties } from "react";
 import { DocumentSheet } from "@/components/document-sheet";
 import { BrandMark, Navbar } from "@/components/navbar";
 import { ProductLink } from "@/components/product-link";
+
+const actionClass =
+  "inline-flex h-10 items-center rounded-lg bg-ink px-4 text-sm whitespace-nowrap text-white transition-colors duration-200 ease-out hover:bg-[#3a3a3a]";
 
 const documents = [
   {
     id: "certificate",
     kind: "certificate",
+    index: "01",
     label: "Certificate",
-    title: "Recognition that holds its shape.",
-    body: "Issue completions, participation, and other recognition from the certificate template. The border, seal, and wording stay put. The recipient and the program change.",
+    body: "Issue completions and other recognition from the certificate template. The recipient, program, and date change. The border and wording stay put.",
     href: "/certificate",
     soon: true,
-    fields: ["Recipient", "Program", "Date", "Signatory"],
+    action: "Coming soon",
   },
   {
     id: "offer-letter",
     kind: "offer",
+    index: "02",
     label: "Offer letter",
-    title: "An offer, in the approved form.",
-    body: "Prepare an offer without rebuilding the letterhead. Role, start date, location, and the rest of the terms follow the template TechCity already uses.",
+    body: "Prepare an offer without rebuilding the letterhead. Role, start, and terms stay in the approved template.",
     href: "/offer-letter",
-    fields: ["Name", "College", "Salary", "Date"],
+    available: true,
+    action: "Open editor",
   },
   {
     id: "appreciation-letter",
     kind: "appreciation",
+    index: "03",
     label: "Appreciation letter",
-    title: "Appreciation, on the record.",
-    body: "Send a formal note of thanks after a training engagement. The letterhead stays consistent. The trainer, role, institution, and dates are what you fill.",
+    body: "Send a formal note after a training engagement. You fill the trainer, role, institution, and dates.",
     href: "/appreciation",
-    fields: ["Trainer", "Role", "Institution", "Date"],
+    available: true,
+    action: "Open editor",
+  },
+] as const;
+
+const steps = [
+  {
+    number: "01",
+    title: "Choose the document",
+    body: "Certificate, offer letter, or appreciation letter.",
+    Figure: Drawer,
+    label: "A cabinet of drawers. One slides open.",
+  },
+  {
+    number: "02",
+    title: "Fill only the details that change",
+    body: "Letterhead, borders, and approved wording stay locked.",
+    Figure: Keyboard,
+    label: "A keyboard. The key under the pointer sinks.",
+  },
+  {
+    number: "03",
+    title: "Download the PDF",
+    body: "The finished document uses the template Techcity Studio already issues.",
+    Figure: Format,
+    label: "A file of lines snapping square into the template.",
   },
 ] as const;
 
@@ -38,131 +69,118 @@ export default function Home() {
     <div id="top" className="flex min-w-0 flex-1 flex-col overflow-x-clip bg-paper text-ink">
       <Navbar />
       <main>
-        <section>
-          <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-10 sm:gap-12 sm:px-6 sm:py-14 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] md:px-8 md:py-16 lg:gap-16 lg:py-20">
-            <div className="min-w-0">
-              <p className="text-sm text-muted">Admin studio</p>
-              <h1 className="mt-3 max-w-xl text-3xl leading-[1.08] font-medium tracking-tight text-ink sm:text-4xl lg:text-5xl">
+        <section className="border-b border-line">
+          <div className="mx-auto grid max-w-6xl lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+            <div className="px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:border-r lg:border-line lg:py-20">
+              <h1 className="max-w-xl font-serif text-[2.55rem] leading-[1.02] tracking-tight text-ink sm:text-5xl lg:text-[3.35rem]">
                 Official documents, from the template.
               </h1>
               <p className="mt-5 max-w-md text-base leading-relaxed text-muted">
-                TechCity is where admins generate certificates, offer letters,
-                and appreciation letters. The template holds the layout. You
-                supply the details.
+                Certificates, offer letters, and appreciation letters are filled
+                into approved templates, then downloaded as PDFs.
               </p>
               <div className="mt-8 flex flex-wrap gap-2">
                 {documents.map((document) => (
-                  <ProductLink
-                    key={document.id}
-                    href={document.href}
-                    className="rounded-lg border border-line bg-card px-3 py-1.5 text-sm text-ink transition-colors hover:border-ink"
-                  >
+                  <ProductLink key={document.id} href={document.href} className={actionClass}>
                     {document.label}
                   </ProductLink>
                 ))}
               </div>
             </div>
 
-            <div aria-hidden="true" className="relative mx-auto hidden w-full lg:block">
-              <div className="relative mx-auto aspect-[5/6] w-full max-w-[440px]">
+            <div className="border-t border-line px-4 py-10 sm:px-6 md:px-8 lg:border-t-0 lg:py-16">
+              <div aria-hidden="true" className="relative hidden h-[440px] lg:block">
                 <DocumentSheet
                   kind="appreciation"
-                  className="absolute top-[10%] left-[6%] w-[48%] -rotate-6"
+                  className="absolute top-10 left-0 w-[48%] -rotate-2"
                 />
                 <DocumentSheet
                   kind="offer"
-                  className="absolute top-[6%] right-[6%] w-[48%] rotate-[4deg]"
+                  className="absolute top-2 right-0 w-[48%] rotate-1"
                 />
                 <DocumentSheet
                   kind="certificate"
-                  className="absolute top-[24%] left-1/2 z-10 w-[52%] -translate-x-1/2"
+                  className="absolute top-20 left-[24%] z-10 w-[50%]"
                 />
               </div>
-            </div>
-            <div className="mx-auto w-full min-w-0 max-w-sm md:max-w-none lg:hidden">
-              <DocumentSheet kind="certificate" />
+              <div className="w-full max-w-[280px] lg:hidden">
+                <DocumentSheet kind="certificate" />
+              </div>
             </div>
           </div>
         </section>
 
-        {documents.map((document, index) => (
-          <section
-            key={document.id}
-            id={document.id}
-            className={`scroll-mt-20 border-t border-line ${
-              index % 2 === 1 ? "bg-card" : "bg-paper"
-            }`}
-          >
-            <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 sm:gap-12 sm:px-6 sm:py-16 md:grid-cols-2 md:gap-10 md:px-8 md:py-20 lg:gap-20 lg:py-28">
-              <div className={`min-w-0 ${index % 2 === 1 ? "md:order-2" : ""}`}>
-                <p className="text-sm text-muted">{document.label}</p>
-                <h2 className="mt-2 max-w-md text-2xl font-medium tracking-tight sm:text-3xl lg:text-4xl">
-                  {document.title}
-                </h2>
-                <p className="mt-4 max-w-md text-base leading-relaxed text-muted">
-                  {document.body}
-                </p>
-                <ul className="mt-6 flex max-w-md flex-wrap gap-2">
-                  {document.fields.map((field) => (
-                    <li
-                      key={field}
-                      className="rounded-lg border border-line bg-white px-2.5 py-1 text-sm text-ink"
-                    >
-                      {field}
-                    </li>
-                  ))}
-                </ul>
-                <ProductLink
-                  href={document.href}
-                  className="mt-6 inline-flex h-10 items-center rounded-lg bg-ink px-4 text-sm text-white"
-                >
-                  {"soon" in document ? "Coming soon" : "Open editor"}
-                </ProductLink>
-              </div>
-              <figure className={`min-w-0 ${index % 2 === 1 ? "md:order-1" : ""}`}>
-                <div aria-hidden="true">
-                  <DocumentSheet
-                    kind={document.kind}
-                    className="mx-auto w-full max-w-[380px]"
-                  />
-                </div>
-                <figcaption className="mt-4 text-center text-xs text-muted">
-                  Sample preview
-                </figcaption>
-              </figure>
-            </div>
-          </section>
-        ))}
-
-        <section className="border-t border-line bg-white">
-          <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:py-20">
-            <h2 className="max-w-lg text-2xl font-medium tracking-tight sm:text-3xl lg:text-4xl">
-              Three steps. The template does the rest.
+        <section id="products" className="scroll-mt-16 border-b border-line">
+          <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16 md:px-8 lg:py-24">
+            <p className="text-xs tracking-[0.18em] text-muted uppercase">Documents</p>
+            <h2 className="mt-3 max-w-lg font-serif text-3xl leading-tight tracking-tight sm:text-4xl">
+              Certificate, offer letter, appreciation letter.
             </h2>
-            <ol className="mt-8 grid gap-8 sm:grid-cols-2 sm:gap-x-6 lg:mt-10 lg:grid-cols-3">
-              <Step
-                number="01"
-                title="Choose the document"
-                body="Certificate, offer letter, or appreciation letter."
-              />
-              <Step
-                number="02"
-                title="Open the template"
-                body="Letterhead, layout, and approved wording stay as they are."
-              />
-              <Step
-                number="03"
-                title="Fill and generate"
-                body="Enter the recipient details and produce the document."
-              />
+            <ul className="mt-10 grid gap-px border border-line bg-line lg:grid-cols-3">
+              {documents.map((document) => (
+                <li key={document.id} className="flex h-full flex-col bg-paper p-6 sm:p-8">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-xs tracking-[0.16em] text-muted">{document.index}</p>
+                    {"available" in document ? (
+                      <p className="text-xs tracking-[0.14em] text-ink">Available</p>
+                    ) : (
+                      <p className="text-xs tracking-[0.14em] text-muted">Coming soon</p>
+                    )}
+                  </div>
+                  <div aria-hidden="true" className="mt-6 w-full max-w-[200px]">
+                    <DocumentSheet kind={document.kind} />
+                  </div>
+                  <h3 className="mt-6 font-serif text-2xl tracking-tight">{document.label}</h3>
+                  <p className="mt-2 max-w-sm flex-1 text-sm leading-relaxed text-muted">
+                    {document.body}
+                  </p>
+                  <ProductLink href={document.href} className={`mt-6 w-fit ${actionClass}`}>
+                    {document.action}
+                  </ProductLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section id="how-it-works" className="scroll-mt-16">
+          <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16 md:px-8 lg:py-24">
+            <p className="text-xs tracking-[0.18em] text-muted uppercase">Process</p>
+            <h2 className="mt-3 max-w-lg font-serif text-3xl leading-tight tracking-tight sm:text-4xl">
+              How it works
+            </h2>
+            <ol className="mt-10 grid gap-10 lg:grid-cols-3 lg:gap-8">
+              {steps.map((step) => (
+                <Step key={step.number} {...step} />
+              ))}
             </ol>
           </div>
         </section>
       </main>
       <footer className="border-t border-line">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-6 md:px-8">
-          <BrandMark className="text-[2.85rem]" />
-          <p className="text-sm text-muted">Admin document generation.</p>
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 md:flex-row md:items-end md:justify-between md:px-8">
+          <BrandMark className="text-[2.4rem] sm:text-[2.85rem]" />
+          <div className="flex flex-col gap-4 md:items-end">
+            <a
+              href="https://www.techcityskills.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-muted transition-colors hover:text-ink"
+            >
+              https://www.techcityskills.com/
+            </a>
+            <nav aria-label="Documents" className="flex flex-wrap gap-x-5 gap-y-2">
+            {documents.map((document) => (
+              <ProductLink
+                key={document.id}
+                href={document.href}
+                className="text-sm text-muted transition-colors hover:text-ink"
+              >
+                {document.label}
+              </ProductLink>
+            ))}
+            </nav>
+          </div>
         </div>
       </footer>
     </div>
@@ -173,16 +191,26 @@ function Step({
   number,
   title,
   body,
+  Figure,
+  label,
 }: {
   number: string;
   title: string;
   body: string;
+  Figure: typeof Drawer;
+  label: string;
 }) {
   return (
     <li className="border-t border-line pt-5">
-      <p className="text-xs text-muted">{number}</p>
-      <h3 className="mt-2 text-base font-medium">{title}</h3>
-      <p className="mt-1 max-w-xs text-sm leading-relaxed text-muted">{body}</p>
+      <div
+        className="max-w-sm bg-white"
+        style={{ "--hairline-plate": "#ffffff" } as CSSProperties}
+      >
+        <Figure theme="light" intensity={0.45} label={label} />
+      </div>
+      <p className="mt-5 text-xs tracking-[0.16em] text-muted">{number}</p>
+      <h3 className="mt-3 text-base font-medium">{title}</h3>
+      <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted">{body}</p>
     </li>
   );
 }
