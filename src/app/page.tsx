@@ -26,10 +26,9 @@ const documents = [
     kind: "appreciation",
     label: "Appreciation letter",
     title: "Appreciation, on the record.",
-    body: "Send a formal note of thanks to a teammate, a cohort, or a partner. The letterhead stays consistent. The occasion is what you write.",
+    body: "Send a formal note of thanks after a training engagement. The letterhead stays consistent. The trainer, role, institution, and dates are what you fill.",
     href: "/appreciation",
-    soon: true,
-    fields: ["Recipient", "Occasion", "Note", "Date"],
+    fields: ["Trainer", "Role", "Institution", "Date"],
   },
 ] as const;
 
