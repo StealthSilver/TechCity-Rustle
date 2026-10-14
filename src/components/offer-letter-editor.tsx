@@ -7,6 +7,8 @@ import {
   formatSalaryAmount,
   isOfferLetterComplete,
   offerLetterFileName,
+  offerLetterTemplates,
+  type OfferLetterTemplate,
   type OfferLetterValues,
 } from "@/lib/offer-letter";
 
@@ -62,6 +64,7 @@ const fields: Array<{
 type PreviewFrame = { url: string; ready: boolean };
 
 export function OfferLetterEditor() {
+  const [template, setTemplate] = useState<OfferLetterTemplate>("old");
   const [values, setValues] = useState<OfferLetterValues>(emptyOfferLetter);
   const [frames, setFrames] = useState<PreviewFrame[]>([]);
   const [downloading, setDownloading] = useState(false);
@@ -87,7 +90,7 @@ export function OfferLetterEditor() {
       void (async () => {
         try {
           const { buildOfferLetterPdf } = await import("@/lib/offer-letter-pdf");
-          const bytes = await buildOfferLetterPdf(values);
+          const bytes = await buildOfferLetterPdf(values, template);
           if (cancelled) return;
           const url = URL.createObjectURL(
             new Blob([Uint8Array.from(bytes)], { type: "application/pdf" }),
@@ -120,7 +123,18 @@ export function OfferLetterEditor() {
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [values]);
+  }, [values, template]);
+
+  useEffect(() => {
+    setFrames((current) => {
+      if (current.length === 0) return current;
+      const dropped = current.map((frame) => frame.url);
+      queueMicrotask(() => {
+        for (const url of dropped) release(url);
+      });
+      return [];
+    });
+  }, [template]);
 
   useEffect(() => {
     return () => {
@@ -155,7 +169,7 @@ export function OfferLetterEditor() {
     setError("");
     try {
       const { downloadOfferLetterPdf } = await import("@/lib/offer-letter-pdf");
-      await downloadOfferLetterPdf(values);
+      await downloadOfferLetterPdf(values, template);
     } catch {
       setError("The PDF could not be created. Try again.");
     } finally {
@@ -172,8 +186,29 @@ export function OfferLetterEditor() {
           void onDownload();
         }}
       >
-        <h1 className="text-lg font-medium tracking-tight">Offer letter</h1>
-        <p className="mt-1 text-sm text-muted">The letter stays fixed. These fields change.</p>
+        <div className="grid grid-cols-2 gap-1 rounded-xl bg-paper p-1" role="group" aria-label="Template">
+          {offerLetterTemplates.map((item) => {
+            const selected = template === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => setTemplate(item.id)}
+                className={`h-10 rounded-lg text-sm transition-colors ${
+                  selected ? "bg-ink text-white" : "text-muted hover:text-ink"
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
+
+        <h1 className="mt-4 text-lg font-medium tracking-tight">Offer letter</h1>
+        <p className="mt-1 text-sm text-muted">
+          Pick a template. These fields stay if you switch.
+        </p>
 
         <div className="mt-5 grid grid-cols-1 gap-3 @min-[24rem]:grid-cols-2">
           {fields.map((field) => (

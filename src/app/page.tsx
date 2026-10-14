@@ -1,5 +1,6 @@
 import { DocumentSheet } from "@/components/document-sheet";
 import { BrandMark, Navbar } from "@/components/navbar";
+import { ProductLink } from "@/components/product-link";
 
 const documents = [
   {
@@ -51,13 +52,13 @@ export default function Home() {
               </p>
               <div className="mt-8 flex flex-wrap gap-2">
                 {documents.map((document) => (
-                  <a
+                  <ProductLink
                     key={document.id}
                     href={document.href}
                     className="rounded-lg border border-line bg-card px-3 py-1.5 text-sm text-ink transition-colors hover:border-ink"
                   >
                     {document.label}
-                  </a>
+                  </ProductLink>
                 ))}
               </div>
             </div>
@@ -111,12 +112,12 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <a
+                <ProductLink
                   href={document.href}
                   className="mt-6 inline-flex h-10 items-center rounded-lg bg-ink px-4 text-sm text-white"
                 >
                   {"soon" in document ? "Coming soon" : "Open editor"}
-                </a>
+                </ProductLink>
               </div>
               <figure className={`min-w-0 ${index % 2 === 1 ? "md:order-1" : ""}`}>
                 <div aria-hidden="true">

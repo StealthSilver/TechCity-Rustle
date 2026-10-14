@@ -1,3 +1,10 @@
+export const offerLetterTemplates = [
+  { id: "old", label: "Old template" },
+  { id: "new", label: "New template" },
+] as const;
+
+export type OfferLetterTemplate = (typeof offerLetterTemplates)[number]["id"];
+
 export type OfferLetterValues = {
   candidateName: string;
   subject: string;

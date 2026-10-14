@@ -259,7 +259,8 @@ function stripAppreciationLetterText(bytes: Uint8Array) {
       const textEnd = endOfTextObject(bytes, token.end, bytes.length);
       const slice = latin1(bytes, cursor, textEnd);
       const keep = keptText.some((snippet) => slice.includes(snippet));
-      if (!keep) textObjects.push([cursor, textEnd]);
+      const hasText = slice.includes("Tj") || slice.includes("TJ");
+      if (hasText && !keep) textObjects.push([cursor, textEnd]);
       cursor = textEnd;
       continue;
     }
@@ -280,7 +281,10 @@ function removeTemplateLetter(pdf: PDFDocument) {
     throw new Error("Appreciation letter template is missing its page contents.");
   }
 
-  const stream = pdf.context.lookup(contentsRef, PDFRawStream);
+  const stream = pdf.context.lookup(contentsRef);
+  if (!(stream instanceof PDFRawStream)) {
+    throw new Error("Appreciation letter template is missing its page contents.");
+  }
   const preserved: Record<string, PDFObject> = {};
   for (const [key, value] of stream.dict.entries()) {
     const name = key.decodeText();
@@ -295,12 +299,16 @@ function drawRuns(
   page: ReturnType<PDFDocument["getPages"]>[number],
   runs: TextRun[],
   fonts: Fonts,
-  x: number,
   y: number,
   size: number,
   ink: LetterInk,
+  justify: boolean,
 ) {
-  let cursor = x;
+  const width = runs.reduce((sum, run) => sum + measure(run, fonts, size), 0);
+  const gaps = runs.filter((run) => run.text.trim() === "").length;
+  const extra = justify && gaps > 0 ? (TEXT_WIDTH - width) / gaps : 0;
+  const stretch = extra > 0 && extra < 8 ? extra : 0;
+  let cursor = LEFT;
   for (const run of runs) {
     page.drawText(run.text, {
       x: cursor,
@@ -310,6 +318,7 @@ function drawRuns(
       color: inks[ink],
     });
     cursor += measure(run, fonts, size);
+    if (run.text.trim() === "") cursor += stretch;
   }
 }
 
@@ -347,15 +356,15 @@ export async function fillAppreciationLetterPdf(
   let baseline = FIRST_BASELINE;
   for (const block of appreciationLetterBlocks(values)) {
     const lines = wrapBlock(block, fonts);
-    for (const line of lines) {
-      drawRuns(page, line, fonts, LEFT, baseline, block.size, block.ink);
+    lines.forEach((line, index) => {
+      drawRuns(page, line, fonts, baseline, block.size, block.ink, index < lines.length - 1);
       baseline -= BODY_LEADING;
-    }
+    });
     if (block.spaceAfter) baseline -= PARAGRAPH_GAP;
   }
 
   for (const line of closingLines) {
-    drawRuns(page, line.runs, fonts, LEFT, line.y, 9.8, line.ink);
+    drawRuns(page, line.runs, fonts, line.y, 9.8, line.ink, false);
   }
 
   return pdf.save();

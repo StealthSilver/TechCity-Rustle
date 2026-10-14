@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAuth } from "@/components/auth-provider";
+import { ProductLink } from "@/components/product-link";
 
 const links = [
   { href: "/certificate", id: "certificate", label: "Certificate" },
@@ -75,27 +77,34 @@ export function Navbar({ current }: { current?: string }) {
 
         <nav className="hidden items-center gap-5 md:flex lg:gap-6 xl:gap-8" aria-label="Documents">
           {links.map((link) => (
-            <a
+            <ProductLink
               key={link.id}
               href={link.href}
-              aria-current={active === link.id ? "true" : undefined}
+              current={active === link.id}
               className="text-sm text-muted transition-colors hover:text-ink aria-[current=true]:text-ink"
             >
               {link.label}
-            </a>
+            </ProductLink>
           ))}
+          <AuthButton className="rounded-lg px-3 py-1.5 text-sm" />
         </nav>
 
-        <button
-          type="button"
-          className="grid size-10 shrink-0 place-items-center rounded-md border border-line text-ink md:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          onClick={() => setOpen((value) => !value)}
-        >
-          <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
-          {open ? <CloseIcon /> : <MenuIcon />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <AuthButton
+            className="rounded-lg px-3 py-1.5 text-sm"
+            onDone={() => setOpen(false)}
+          />
+          <button
+            type="button"
+            className="grid size-10 shrink-0 place-items-center rounded-md border border-line text-ink"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            onClick={() => setOpen((value) => !value)}
+          >
+            <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
+            {open ? <CloseIcon /> : <MenuIcon />}
+          </button>
+        </div>
       </div>
 
       {open ? (
@@ -105,19 +114,65 @@ export function Navbar({ current }: { current?: string }) {
           className="max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-t border-line px-4 py-2 sm:px-6 md:hidden"
         >
           {links.map((link) => (
-            <a
+            <ProductLink
               key={link.id}
               href={link.href}
-              aria-current={active === link.id ? "true" : undefined}
-              className="block border-b border-line py-3.5 text-base text-ink last:border-b-0"
-              onClick={() => setOpen(false)}
+              current={active === link.id}
+              className="block border-b border-line py-3.5 text-base text-ink"
+              onNavigate={() => setOpen(false)}
             >
               {link.label}
-            </a>
+            </ProductLink>
           ))}
+          <AuthButton
+            className="mt-1 block w-full rounded-lg px-3 py-3 text-left text-base"
+            onDone={() => setOpen(false)}
+          />
         </nav>
       ) : null}
     </header>
+  );
+}
+
+function AuthButton({
+  className,
+  onDone,
+}: {
+  className?: string;
+  onDone?: () => void;
+}) {
+  const { username, ready, openLogin, logout } = useAuth();
+
+  if (!ready) {
+    return <span className={`inline-block h-9 w-16 ${className ?? ""}`} aria-hidden="true" />;
+  }
+
+  if (username) {
+    return (
+      <button
+        type="button"
+        className={`border border-line text-ink ${className ?? ""}`}
+        onClick={() => {
+          onDone?.();
+          void logout();
+        }}
+      >
+        Log out
+      </button>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      className={`bg-ink text-white ${className ?? ""}`}
+      onClick={() => {
+        onDone?.();
+        openLogin();
+      }}
+    >
+      Log in
+    </button>
   );
 }
 
