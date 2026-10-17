@@ -13,10 +13,10 @@ const documents = [
     kind: "certificate",
     index: "01",
     label: "Certificate",
-    body: "Issue completions and other recognition from the certificate template. The recipient, program, and date change. The border and wording stay put.",
+    body: "Issue a completion certificate from the approved template. The candidate, the training, and the college logo change. The border stays put.",
     href: "/certificate",
-    soon: true,
-    action: "Coming soon",
+    available: true,
+    action: "Open editor",
   },
   {
     id: "offer-letter",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useAuth } from "@/components/auth-provider";
 import { ProductLink } from "@/components/product-link";
 
@@ -31,7 +32,7 @@ export function BrandMark({
 
 function StudioWord() {
   return (
-    <span className="text-[0.58em] font-semibold uppercase leading-none tracking-[0.06em]">
+    <span className="text-[0.46em] font-semibold uppercase leading-none tracking-[0.06em]">
       STUDIO
     </span>
   );
@@ -54,9 +55,9 @@ export function Navbar({ current }: { current?: string }) {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur-md">
       <div className="mx-auto flex min-h-14 max-w-6xl items-center justify-between gap-3 px-4 py-2 sm:gap-6 sm:px-6 md:px-8">
-        <a href="/" aria-label="Techcity Studio" className="flex min-w-0 items-center">
+        <Link href="/" aria-label="Techcity Studio" className="flex min-w-0 items-center">
           <BrandMark className="text-[2rem] sm:text-[2.35rem]" />
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-4 lg:flex lg:gap-5" aria-label="Documents">
           {links.map((link) => (

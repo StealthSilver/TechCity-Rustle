@@ -125,7 +125,9 @@ export function OfferLetterEditor() {
     };
   }, [values, template]);
 
-  useEffect(() => {
+  function selectTemplate(next: OfferLetterTemplate) {
+    if (next === template) return;
+    setTemplate(next);
     setFrames((current) => {
       if (current.length === 0) return current;
       const dropped = current.map((frame) => frame.url);
@@ -134,7 +136,7 @@ export function OfferLetterEditor() {
       });
       return [];
     });
-  }, [template]);
+  }
 
   useEffect(() => {
     return () => {
@@ -194,7 +196,7 @@ export function OfferLetterEditor() {
                 key={item.id}
                 type="button"
                 aria-pressed={selected}
-                onClick={() => setTemplate(item.id)}
+                onClick={() => selectTemplate(item.id)}
                 className={`h-10 rounded-lg text-sm transition-colors ${
                   selected ? "bg-ink text-white" : "text-muted hover:text-ink"
                 }`}
